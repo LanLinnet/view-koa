@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Start",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/app.js",
+            "stopOnEntry": false,
+            "args": [],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": null,
+            "runtimeExecutable": null,
+            "runtimeArgs": [
+                "--nolazy", "--use_strict"
+            ],
+            "env": {
+                //开发的时候，环境变量应该设置为'development'
+                //而部署到服务器时，环境变量应该设置为'production'
+                "NODE_ENV": "development"
+            },
+            "externalConsole": false,
+            "sourceMaps": false,
+            "outDir": null
+        }
+    ]
+}

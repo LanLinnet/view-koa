@@ -1,0 +1,46 @@
+{% extends "base.html" %} {% block main %}
+<div id="important" style="color:#cdbfe3; background-color:#3b009b; padding:30px 0; margin:-20px 0 20px 0;">
+    <div class="container">
+        <h1 style="color:#fff; font-size:60px">Getting started</h1>
+        <p style="font-size:24px; line-height:48px">Learn JavaScript, HT, Three.js, etc.</p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-user"></span> Please sign in</h3>
+                </div>
+                <div class="panel-body">
+                    <form action="/signin" method="post">
+                        <div class="form-group">
+                            <label>Email address</label>
+                            <input type="email" name="email" class="form-control" placeholder="Email">
+                            <p class="help-block">Use email: admin@example.com</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" name="password" class="form-control" placeholder="Password">
+                            <p class="help-block">Use password: 123456</p>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-send"></span> What's New</h3>
+                </div>
+                <div class="panel-body" style="background-color:#F06529; text-align: center; margin-top: 2%;">
+                    <a target="_blank" href="https://frontendfoc.us/latest" style="color:#fff; font-size:60px; text-decoration:none;"><img src="/static/images/hhmdxfk96fnbq3effjk1.png" width="60" style="margin-top: 7px; outline: none; height: auto; text-decoration: none; max-width: 100%; line-height: 100%; border: 0; margin-right: 5%;">Frontend Focus</a>
+                </div>
+                <div class="panel-body" style="background-color:#D99E29; text-align: center; margin-top: 2%; margin-bottom: 2%;">
+                    <a target="_blank" href="https://javascriptweekly.com/latest" style="color:#000; font-size:60px; text-decoration:none;">JavaScript Weekly</a>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}
