@@ -1,14 +1,16 @@
 {% extends "base.html" %} {% block main %}
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <title>Threejs三维场景</title>
   <style>
     body {
       margin: 0;
-      overflow: hidden;
+      /*overflow: hidden;*/
       /* 隐藏body窗口区域滚动条 */
+    }
+    #c{
+      width:100%;
+      height:100%;
+      display: block;
     }
   </style>
   <!--引入three.js三维引擎-->
@@ -22,7 +24,11 @@
 </head>
 
 <body>
+  <canvas id="c">
+
+  </canvas>
   <script>
+    const canvas = document.querySelector('#c');
     /**
      * 创建场景对象Scene
      */
@@ -75,17 +81,18 @@
     /**
      * 相机设置
      */
-    var width = window.innerWidth; //浏览器宽度
-    var height = window.innerHeight; //浏览器高度
+    var width = canvas.clientWidth; //浏览器宽度
+    var height = canvas.clientHeight; //浏览器高度
     var k = width / height; //窗口宽高比
     var s = 500; //三维场景显示范围控制系数，系数越大，显示的范围越大
     //创建相机对象
-    var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 4000);
+    var camera = new THREE.PerspectiveCamera(45, k, 1, 4000);
     camera.position.set(100, 300, 1000); //设置相机位置
+    camera.lookAt(scene.position);//设置相机对象（指向的场景对象）
     /**
      * 创建渲染器对象
      */
-    var renderer = new THREE.WebGLRenderer();
+    var renderer = new THREE.WebGLRenderer({canvas});
     renderer.setSize(width, height);//设置渲染区域尺寸
     renderer.setClearColor(0xb9d3ff, 1); //设置背景颜色
     document.body.appendChild(renderer.domElement); //body元素中插入canvas对象
@@ -97,6 +104,18 @@
     }
     render();
     var controls = new THREE.OrbitControls(camera,renderer.domElement);//创建控件对象
+
+    //onresize 事件会在窗口被调整大小时发生
+    window.onresize = function(){
+      // 重置渲染器输出画布canvas尺寸
+      renderer.setSize(window.innerWidth,window.innerHeight);
+      // 全屏情况下：设置观察范围长宽比aspect为窗口宽高比
+      camera.aspect = window.innerWidth/window.innerHeight;
+      // 渲染器执行render方法的时候会读取相机对象的投影矩阵属性projectionMatrix
+      // 但是不会每渲染一帧，就通过相机的属性计算投影矩阵(节约计算资源)
+      // 如果相机的一些属性发生了变化，需要执行updateProjectionMatrix ()方法更新相机的投影矩阵
+      camera.updateProjectionMatrix ();
+    }
   </script>
 </body>
 {% endblock %}

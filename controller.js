@@ -30,7 +30,7 @@ function addMapping(router, mapping) {
   }
   
   // 先导入fs模块，然后用readdirSync列出文件
-  // 这里可以用sync是因为启动时只运行一次，不存在性能问题:
+  // 这里可以用async是因为启动时只运行一次，不存在性能问题:
 function addControllers(router, dir) {
     // 过滤出.js文件、处理每个js文件:
     fs.readdirSync(__dirname+'/'+dir).filter((f) => {

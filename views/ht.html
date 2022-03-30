@@ -1,0 +1,385 @@
+{% extends "base.html" %} {% block main %}
+<head>
+    <title>HT 3D Modeling</title>
+    <meta charset="UTF-8">
+    <style>
+        html, body {
+            padding: 0px;
+            margin: 0px;
+        }
+        .main {
+            background: #426AA1;
+            margin: 0px;
+            padding: 0px;
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+        }
+        .upload{
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+        .btn{
+            padding: 2px 10px;
+            background: #00b0f0;
+            color: #FFF;
+            border: none;
+            border-radius: 5px;
+        }
+        .path{
+            color: black;
+            font-size: 10px;
+            display: inline-block;
+            width: 210px;
+        }
+
+    </style>
+    <!-- jQuery -->
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/ht/ht.js"></script>
+    <script src="/static/js/ht/ht-obj.js"></script>
+    <script src="/static/js/ht/ht-form.js"></script>
+    <script src="/static/js/ht/ht-modeling.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            //jquery显示文件名字--只放30个字符
+            $("#objFile").change(function () {
+                    var filePath = $("#objFile").val();
+                    var arr=filePath.split('\\');
+                    var fileName = arr[arr.length-1];
+                    $("#objPath").html(fileName.slice(0,30));
+                }
+            ),
+                $("#mtlFile").change(function () {
+                        var filePath = $("#mtlFile").val();
+                        var arr=filePath.split('\\');
+                        var fileName = arr[arr.length-1];
+                        $("#mtlPath").html(fileName.slice(0,30));
+                    }
+                )
+        });
+
+        dataModel = new ht.DataModel();
+        g3d = new ht.graph3d.Graph3dView(dataModel);
+        g3d.getView().style.background = '#4C7BBB';
+        //设置画布属性
+        g3d.setEye([0, 500, 1000]);
+        g3d.setCenter([0, 200, 0]);
+        g3d.setGridVisible(false);
+        g3d.enableToolTip();
+
+        //以上部分固定不动
+        function init(){
+            borderPane = new ht.widget.BorderPane();
+            borderPane.setTopView(createTopToolbar());
+            borderPane.setCenterView(g3d);
+            borderPane.setBottomView(createButtomToolbar());
+            window.addEventListener('resize', function (e) {
+                borderPane.invalidate();
+            }, false);
+            borderPane.addToDOM();
+
+            //加载obj模型，r3-角度，s3-大小
+            loadObj('E1', 0, {r3: [0, 0, 0], s3: [1, 1, 1]});
+        }
+
+
+        function loadObj(name, x, params){
+            params.prefix = 'obj/';
+            params.center = true;
+            params.cube = true;
+            params.shape3d = name;
+            params.finishFunc = function(modelMap, array, rawS3){
+                var node = new ht.Node();
+                node.s({
+                    'shape3d': name,
+                    'wf.visible': 'selected',
+                    'wf.width': 3,
+                    'wf.color': '#F7F691'
+                });
+                node.s3(rawS3);
+                node.p3(x, rawS3[1]/2, 0);
+                dataModel.add(node);
+            };
+
+            ht.Default.loadObj('/static/models/castingMachine/CastingMachine.obj', '/static/models/castingMachine/CastingMachine.mtl', params);
+        }
+
+        //设置页面最上端的工具栏
+        function createTopToolbar(){
+            var toolbar = new ht.widget.Toolbar([
+                {
+                    id:'title',
+                    label: 'HT 3D Modeling'
+                },
+                'separator',
+                {
+                    id:'light',
+                    label: 'Light',
+                    comboBox: {
+                        values: ['white', 'yellow', 'red', 'blue', 'green', 'orange'],
+                        value: 'white',
+                        onValueChanged: function(){
+                            g3d.setHeadlightColor(this.getValue());
+                        }
+                    }
+                },
+                {
+                    id: 'range',
+                    label: 'Range',
+                    unfocusable: true,
+                    slider: {
+                        width: 70,
+                        step: 0.05,
+                        min: 0,
+                        max: 5,
+                        value: 1.4,
+                        onValueChanged: function(){
+                            g3d.setHeadlightIntensity(this.getValue());
+                        }
+                    }
+                },
+                'separator',
+                {
+                    id:'fogEnable',
+                    label: 'Fog',
+                    type: 'check',
+                    action: function(){
+                        g3d.setFogDisabled(!this.selected);
+                    }
+                },
+                {
+                    id:'fogColor',
+                    label: 'FogColor',
+                    groupId: 'fog',
+                    comboBox: {
+                        values: ['white', 'yellow', 'red'],
+                        value: 'white',
+                        onValueChanged: function(){
+                            g3d.setFogColor(this.getValue());
+                        }
+                    }
+                },
+                {
+                    unfocusable: true,
+                    id:'fogNear',
+                    label: 'FogNear',
+                    slider: {
+                        width: 70,
+                        min: 10,
+                        max: 4000,
+                        value: 100,
+                        onValueChanged: function(){
+                            g3d.setFogNear(this.getValue());
+                        }
+                    }
+                },
+                {
+                    unfocusable: true,
+                    id:'fogFar',
+                    label: 'FogFar',
+                    slider: {
+                        width: 70,
+                        min: 5000,
+                        max: 15000,
+                        value: 8000,
+                        onValueChanged: function(){
+                            g3d.setFogFar(this.getValue());
+                        }
+                    }
+                },
+                'separator',
+                {
+                    //函数没有用！！！
+                    id: 'movable',
+                    label: 'Movable',
+                    type: 'check',
+                    selected: false,
+                    action: function(item){
+                        g3d.setMovable(item.selected);
+                    }
+                },
+                {
+                    id: 'editable',
+                    label: 'Editable',
+                    type: 'check',
+                    selected: false,
+                    action: function(item){
+                        g3d.setEditable(item.selected);
+                    }
+                },
+                {
+                    id: 'wireframe',
+                    label: 'Wireframe',
+                    type: 'check',
+                    selected: false,
+                    action: function(item){
+                        if(item.selected){
+                            dataModel.each(function(data){
+                                data.s({
+                                    'wf.visible': 'selected',
+                                    'wf.color': 'red'
+                                });
+                            });
+                        }else{
+                            dataModel.each(function(data){
+                                data.s({
+                                    'wf.visible': false
+                                });
+                            });
+                        }
+                    }
+                },
+                {
+                    id:'orthoProj',
+                    type: 'toggle',
+                    label: 'Orthographic Projection',
+                    action: function(item){
+                        g3d.setOrtho(item.selected);
+                    }
+                },
+                {
+                    id:'firstPersonMode',
+                    type: 'toggle',
+                    selected: false,
+                    label: 'First Person Mode',
+                    action: function(item){
+                        g3d.setFirstPersonMode(item.selected);
+                        g3d.reset();
+                    }
+                },
+                'separator',
+                {
+                    id:'backgroundColor',
+                    label:'Background Color',
+                    comboBox: {
+                        values: ['blue','white', 'yellow', 'red'],
+                        value: 'blue',
+                        onValueChanged: function(){
+                            g3d.getView().style.background = this.getValue();
+                        }
+                    }
+                },
+                {
+                    id:'originAxis',
+                    type: 'check',
+                    label: 'Origin Axis',
+                    selected: false,
+                    action: function(item){
+                        g3d.setOriginAxisVisible(item.selected);
+                    }
+                },
+                {
+                    id: 'centerAxis',
+                    type: 'check',
+                    label: 'Center Axis',
+                    selected: false,
+                    action: function(item){
+                        g3d.setCenterAxisVisible(item.selected);
+                    }
+                },
+                {
+                    id: 'grid',
+                    type: 'check',
+                    label: 'Grid',
+                    selected: false,
+                    action: function(item){
+                        g3d.setGridVisible(item.selected);
+                    }
+                },
+                {
+                    id: 'exportImage',
+                    label: 'Export Image',
+                    action: function(){
+                        var w = window.open();
+                        w.document.open();
+                        w.document.write("<img src='" + g3d.toDataURL(g3d.getView().style.background) + "'/>");
+                        w.document.close();
+                    }
+                }
+
+            ]);
+            toolbar.enableToolTip();
+            return toolbar;
+        }
+
+        function createButtomToolbar()
+        {
+            var toolbar = new ht.widget.Toolbar([
+                {
+                    id: 'uploadOBJ',
+                    element: document.getElementById('uploadOBJ')
+                },
+                'separator',
+                {
+                    id: 'uploadMTL',
+                    element: document.getElementById('uploadMTL')
+                },
+                'separator',
+            ]);
+            toolbar.enableToolTip();
+            return toolbar;
+        }
+    
+        //将文件通过formData的形式发送到服务器上
+        function Upload(input){
+            if (window.FileReader) {
+                //filelist中的第一个文件（事实上本来就只有一个文件）
+                var file = input.files[0];
+                filename = file.name.split(".")[0];
+                var formData = new FormData();
+                formData.append("upload",file,filename);
+                $.ajax({
+                    url:'/uploadmodels', /*接口域名地址*/
+                    type:'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success:function(returndata){
+                        console.log('succ:' + returndata);
+                    },
+                    error:function(returndata){
+                        console.log('err: '+ returndata);
+                    }
+                })
+            }
+            //支持IE 7 8 9 10
+            else if (typeof window.ActiveXObject != 'undefined'){
+                var xmlDoc;
+                xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+                xmlDoc.async = false;
+                xmlDoc.load(input.value);
+                //alert(xmlDoc.xml);
+            }
+            //支持FF
+            else if (document.implementation && document.implementation.createDocument) {
+                var xmlDoc;
+                xmlDoc = document.implementation.createDocument("", "", null);
+                xmlDoc.async = false;
+                xmlDoc.load(input.value);
+                //alert(xmlDoc.xml);
+            } else {
+                alert('error');
+            }
+        }
+    </script>
+</head>
+<!--onload 事件在页面载入完成后立即触发-->
+<body onload="init();">
+<div id="uploadOBJ">
+    <input type="button" id="objBtn" class="btn" value="请上传OBJ模型">
+    <span type="text" id="objPath" class="path"></span>
+    <input type="file" id="objFile" class="upload" accept=".obj" onchange="Upload(this)">
+</div>
+<div id="uploadMTL">
+    <input type="button" id="objMtl" class="btn" value="请上传MTL材质">
+    <span type="text" id="mtlPath" class="path"></span>
+    <input type="file" id="mtlFile" class="upload" accept=".mtl" onchange="Upload(this)">
+</div>
+</body>
+{% endblock %}

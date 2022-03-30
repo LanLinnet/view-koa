@@ -3,10 +3,13 @@ const Koa = require('koa');
 
 const bodyParser = require('koa-bodyparser');
 
+const Router = require('koa-router');
+
 const controller = require('./controller');
 
 const templating = require('./templating');
 
+//const path = require('path');
 
 const app = new Koa();
 
@@ -33,6 +36,16 @@ if(! isProduction){  //不是生产环境时
 
 // parse request body:解析POST请求
 app.use(bodyParser());
+// app.use(bodyParser({
+//     // 支持文件格式
+//     multipart: true,
+//     formidable: {
+//         // 上传目录
+//         uploadDir: path.join(__dirname, '/static/models'),
+//         // 保留文件扩展名
+//         keepExtensions: true,
+//     }
+// }));
 
 //add nunjucks as view:给ctx加上render()来使用Nunjucks
 app.use(templating('views', {
@@ -43,6 +56,5 @@ app.use(templating('views', {
 // add controller:处理URL路由
 app.use(controller());
 
-
-app.listen(3000);
-console.log('app started at port 3000...');
+app.listen(8080);
+console.log('app started at port 8080...');
