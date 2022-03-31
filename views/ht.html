@@ -1,22 +1,8 @@
-{% extends "base.html" %} {% block main %}
+{% extends "base.html" %}{% block main %}
 <head>
     <title>HT 3D Modeling</title>
     <meta charset="UTF-8">
     <style>
-        html, body {
-            padding: 0px;
-            margin: 0px;
-        }
-        .main {
-            background: #426AA1;
-            margin: 0px;
-            padding: 0px;
-            position: absolute;
-            top: 0px;
-            bottom: 0px;
-            left: 0px;
-            right: 0px;
-        }
         .upload{
             position: absolute;
             left: 0;
@@ -36,8 +22,22 @@
             display: inline-block;
             width: 210px;
         }
+        /* 装载3D界面的div元素 */
+        #htmodel{
+            position: relative;
+        }
+        /* g3dview */
+        #main {
+                background: #426AA1;
+                position: absolute;
+                left:0%;
+                top:0%;
+                width: 100%;
+                height: 100%;                
+            }
 
     </style>
+ 
     <!-- jQuery -->
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/ht/ht.js"></script>
@@ -82,8 +82,11 @@
             window.addEventListener('resize', function (e) {
                 borderPane.invalidate();
             }, false);
-            borderPane.addToDOM();
-
+            //获取组件的根层div
+            view = borderPane.getView();
+            view.id = 'main';
+            document.getElementById("htmodel").appendChild(view);
+            //borderPane.addToDOM();
             //加载obj模型，r3-角度，s3-大小
             loadObj('E1', 0, {r3: [0, 0, 0], s3: [1, 1, 1]});
         }
@@ -369,8 +372,21 @@
         }
     </script>
 </head>
+
+
 <!--onload 事件在页面载入完成后立即触发-->
 <body onload="init();">
+
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><span class="glyphicon glyphicon-edit"></span> HT 3D Model</h3>
+        </div>
+        <div id="htmodel" class="panel-body" style="min-height: 600px;">
+        </div>
+    </div>
+</div>
+
 <div id="uploadOBJ">
     <input type="button" id="objBtn" class="btn" value="请上传OBJ模型">
     <span type="text" id="objPath" class="path"></span>

@@ -2,6 +2,7 @@
 const path = require('path');
 const mime = require('mime');
 //mz提供的API和Node.js的fs模块完全相同，但fs模块使用回调，而mz封装了fs对应的函数，并改为Promise
+//我们就可以非常简单的用await调用mz的函数，而不需要任何回调
 const fs = require('mz/fs');
 
 /**
