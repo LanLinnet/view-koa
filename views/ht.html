@@ -332,6 +332,7 @@
         //将文件通过formData的形式发送到服务器上
         function Upload(input){
             if (window.FileReader) {
+                var reader = new FileReader();
                 //filelist中的第一个文件（事实上本来就只有一个文件）
                 var file = input.files[0];
                 filename = file.name.split(".")[0];
@@ -341,13 +342,14 @@
                     url:'/uploadmodels', /*接口域名地址*/
                     type:'POST',
                     data: formData,
-                    contentType: false,
-                    processData: false,
-                    success:function(returndata){
-                        console.log('succ:' + returndata);
+                    cache: false,
+                    contentType: false,   //告诉jQuery不要设置content-Type请求头
+                    processData: false,   //告诉jQuery不要处理发送的数据
+                    success:function(data){
+                        console.log(data);
                     },
-                    error:function(returndata){
-                        console.log('err: '+ returndata);
+                    error:function(data){
+                        console.log(data);
                     }
                 })
             }

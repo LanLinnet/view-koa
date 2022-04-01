@@ -9,8 +9,6 @@ const controller = require('./controller');
 
 const templating = require('./templating');
 
-//const path = require('path');
-
 const app = new Koa();
 
 //判断当前环境是否是production环境,如果是，就使用缓存，如果不是，就关闭缓存。(在launch.json中设置)
