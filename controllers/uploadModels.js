@@ -17,18 +17,23 @@ const upload = multer({storage});
 
 //定义async函数处理文件上传请求/uploadmodels
 module.exports = {
-    'POST /uploadmodels': async(ctx) => {
+    'POST /uploadmodels': async(ctx, next) => {
        //console.log(ctx.request.body);  //根据Koa文档，ctx.body等同于ctx.res.body，所以从ctx.body取出来的是空的响应报文，而不是请求报文的实体
        //ctx.body = ctx.request.body;  //获取表单提交的数据
-       upload.single('file');
-       console.log(ctx.req.file);
-       //ctx.body = ctx.request.body;
-       ctx.body = ctx.body = {
-            code: 1,
-            data: ctx.file
-        };
+       //upload.single('file');
+       let err = await upload.single('file')(ctx, next)
+                    .then(res=>res)
+                    .catch(err=>err)
+        if(err){
+            ctx.body = {
+            code:0,
+            msg : err.message
+            }
+        }else{
+            ctx.body = {
+            code:1,
+            data:ctx.file
+            }
+        }
     }
 };
-
-//前端显示的文件有一些问题
-//文件没有正确保存

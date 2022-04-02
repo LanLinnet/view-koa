@@ -329,49 +329,89 @@
             return toolbar;
         }
     
+        //重新写过html前面的表单试试，现在不需要使用filereader
         //将文件通过formData的形式发送到服务器上
-        function Upload(input){
-            if (window.FileReader) {
-                var reader = new FileReader();
-                //filelist中的第一个文件（事实上本来就只有一个文件）
-                var file = input.files[0];
-                filename = file.name.split(".")[0];
-                var formData = new FormData();
-                formData.append("upload",file,filename);
+        // function Upload(input){
+        //     if (window.FileReader) {
+        //         var reader = new FileReader();
+        //         //filelist中的第一个文件（事实上本来就只有一个文件）
+        //         var file = input.files[0];
+        //         filename = file.name.split(".")[0];
+        //         var formData = new FormData();
+        //         formData.append("upload",file,filename);
+        //         $.ajax({
+        //             url:'/uploadmodels', /*接口域名地址*/
+        //             type:'POST',
+        //             data: formData,
+        //             cache: false,
+        //             contentType: false,   //告诉jQuery不要设置content-Type请求头
+        //             processData: false,   //告诉jQuery不要处理发送的数据
+        //             success:function(data){
+        //                 console.log(data);
+        //             },
+        //             error:function(data){
+        //                 console.log(data);
+        //             }
+        //         })
+        //     }
+        //     //支持IE 7 8 9 10
+        //     else if (typeof window.ActiveXObject != 'undefined'){
+        //         var xmlDoc;
+        //         xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+        //         xmlDoc.async = false;
+        //         xmlDoc.load(input.value);
+        //         //alert(xmlDoc.xml);
+        //     }
+        //     //支持FF
+        //     else if (document.implementation && document.implementation.createDocument) {
+        //         var xmlDoc;
+        //         xmlDoc = document.implementation.createDocument("", "", null);
+        //         xmlDoc.async = false;
+        //         xmlDoc.load(input.value);
+        //         //alert(xmlDoc.xml);
+        //     } else {
+        //         alert('error');
+        //     }
+        // }
+        $(function(){
+            $('#objFile').change(()=>{
+                let file = $('#objFile')[0].files[0]
+                let formData = new FormData()
+                formData.set('file',file)
+                formData.set('name',file.name)
+                formData.set('timestamp',Date.now())
                 $.ajax({
-                    url:'/uploadmodels', /*接口域名地址*/
-                    type:'POST',
+                    url:'/uploadmodels',
+                    type:'post',
                     data: formData,
                     cache: false,
-                    contentType: false,   //告诉jQuery不要设置content-Type请求头
-                    processData: false,   //告诉jQuery不要处理发送的数据
-                    success:function(data){
-                        console.log(data);
-                    },
-                    error:function(data){
-                        console.log(data);
-                    }
+                    contentType: false,
+                    processData:false,
+                    success(res){
+                            console.log(res)
+                        }
                 })
-            }
-            //支持IE 7 8 9 10
-            else if (typeof window.ActiveXObject != 'undefined'){
-                var xmlDoc;
-                xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-                xmlDoc.async = false;
-                xmlDoc.load(input.value);
-                //alert(xmlDoc.xml);
-            }
-            //支持FF
-            else if (document.implementation && document.implementation.createDocument) {
-                var xmlDoc;
-                xmlDoc = document.implementation.createDocument("", "", null);
-                xmlDoc.async = false;
-                xmlDoc.load(input.value);
-                //alert(xmlDoc.xml);
-            } else {
-                alert('error');
-            }
-        }
+            }) 
+
+            $('#mtlFile').change(()=>{
+                let file = $('#mtlFile')[0].files[0]
+                let formData = new FormData()
+                formData.set('file',file)
+                formData.set('name',file.name)
+                formData.set('timestamp',Date.now())
+                $.ajax({
+                    url:'/uploadmodels',
+                    type:'post',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData:false,
+                    success(res){
+                            console.log(res)
+                        }
+                })
+            }) 
+        })
     </script>
 </head>
 
@@ -392,12 +432,12 @@
 <div id="uploadOBJ">
     <input type="button" id="objBtn" class="btn" value="请上传OBJ模型">
     <span type="text" id="objPath" class="path"></span>
-    <input type="file" id="objFile" class="upload" accept=".obj" onchange="Upload(this)">
+    <input type="file" id="objFile" class="upload" accept=".obj">
 </div>
 <div id="uploadMTL">
     <input type="button" id="objMtl" class="btn" value="请上传MTL材质">
     <span type="text" id="mtlPath" class="path"></span>
-    <input type="file" id="mtlFile" class="upload" accept=".mtl" onchange="Upload(this)">
+    <input type="file" id="mtlFile" class="upload" accept=".mtl">
 </div>
 </body>
 {% endblock %}
