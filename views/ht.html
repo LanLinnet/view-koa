@@ -46,6 +46,9 @@
     <script src="/static/js/ht/ht-modeling.js"></script>
 
     <script>
+        //默认显示圆盘浇注机
+        var objFilePath = "/static/models/castingMachine/CastingMachine.obj";
+        var mtlFilePath = "/static/models/castingMachine/CastingMachine.mtl";
         $(document).ready(function(){
             //jquery显示文件名字--只放30个字符
             $("#objFile").change(function () {
@@ -91,7 +94,7 @@
             loadObj('E1', 0, {r3: [0, 0, 0], s3: [1, 1, 1]});
         }
 
-
+    
         function loadObj(name, x, params){
             params.prefix = 'obj/';
             params.center = true;
@@ -110,7 +113,7 @@
                 dataModel.add(node);
             };
 
-            ht.Default.loadObj('/static/models/castingMachine/CastingMachine.obj', '/static/models/castingMachine/CastingMachine.mtl', params);
+            ht.Default.loadObj(objFilePath, mtlFilePath, params);
         }
 
         //设置页面最上端的工具栏
@@ -329,50 +332,6 @@
             return toolbar;
         }
     
-        //重新写过html前面的表单试试，现在不需要使用filereader
-        //将文件通过formData的形式发送到服务器上
-        // function Upload(input){
-        //     if (window.FileReader) {
-        //         var reader = new FileReader();
-        //         //filelist中的第一个文件（事实上本来就只有一个文件）
-        //         var file = input.files[0];
-        //         filename = file.name.split(".")[0];
-        //         var formData = new FormData();
-        //         formData.append("upload",file,filename);
-        //         $.ajax({
-        //             url:'/uploadmodels', /*接口域名地址*/
-        //             type:'POST',
-        //             data: formData,
-        //             cache: false,
-        //             contentType: false,   //告诉jQuery不要设置content-Type请求头
-        //             processData: false,   //告诉jQuery不要处理发送的数据
-        //             success:function(data){
-        //                 console.log(data);
-        //             },
-        //             error:function(data){
-        //                 console.log(data);
-        //             }
-        //         })
-        //     }
-        //     //支持IE 7 8 9 10
-        //     else if (typeof window.ActiveXObject != 'undefined'){
-        //         var xmlDoc;
-        //         xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-        //         xmlDoc.async = false;
-        //         xmlDoc.load(input.value);
-        //         //alert(xmlDoc.xml);
-        //     }
-        //     //支持FF
-        //     else if (document.implementation && document.implementation.createDocument) {
-        //         var xmlDoc;
-        //         xmlDoc = document.implementation.createDocument("", "", null);
-        //         xmlDoc.async = false;
-        //         xmlDoc.load(input.value);
-        //         //alert(xmlDoc.xml);
-        //     } else {
-        //         alert('error');
-        //     }
-        // }
         $(function(){
             $('#objFile').change(()=>{
                 let file = $('#objFile')[0].files[0]
@@ -388,7 +347,11 @@
                     contentType: false,
                     processData:false,
                     success(res){
-                            console.log(res)
+                            console.log(res);
+                            //当上传的文件改变时，3D渲染文件的路径自动改变
+                            //将后端回传的路径res.data.path中的'\'全部变为'/'
+                            objFilePath = '/'+res.data.path.replace(new RegExp(/\\/g),'/');
+                            loadObj('E1', 0, {r3: [0, 0, 0], s3: [1, 1, 1]});
                         }
                 })
             }) 
@@ -407,7 +370,9 @@
                     contentType: false,
                     processData:false,
                     success(res){
-                            console.log(res)
+                            console.log(res);
+                            mtlFilePath = '/'+res.data.path.replace(new RegExp(/\\/g),'/');
+                            loadObj('E1', 0, {r3: [0, 0, 0], s3: [1, 1, 1]});
                         }
                 })
             }) 
