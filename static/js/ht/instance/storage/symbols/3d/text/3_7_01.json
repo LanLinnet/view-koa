@@ -1,0 +1,194 @@
+{
+  "modified": "Mon Oct 21 2019 16:02:24 GMT+0800 (中国标准时间)",
+  "dataBindings": [
+    {
+      "attr": "text1",
+      "valueType": "String"
+    },
+    {
+      "attr": "text.color",
+      "valueType": "Color"
+    },
+    {
+      "attr": "text2",
+      "valueType": "String"
+    }
+  ],
+  "width": 228,
+  "height": 127,
+  "boundExtend": 12,
+  "comps": [
+    {
+      "type": "oval",
+      "background": "rgba(41,155,217,0.85)",
+      "borderColor": "#979797",
+      "selectable": false,
+      "shadow": true,
+      "shadowColor": "rgb(41,155,217)",
+      "shadowBlur": 24,
+      "shadowOffsetX": 0,
+      "shadowOffsetY": 0,
+      "rect": [
+        18.24582,
+        58.92969,
+        209.43473,
+        4
+      ]
+    },
+    {
+      "type": "shape",
+      "background": "rgba(16,16,41,0.80)",
+      "borderColor": "rgba(76,205,252,0.50)",
+      "points": [
+        18.56273,
+        61.18278,
+        0.00001,
+        50.85149,
+        0.00001,
+        0.84194,
+        211.43724,
+        0.84194,
+        227.68054,
+        12.14425,
+        227.68054,
+        61.18278
+      ]
+    },
+    {
+      "type": "shape",
+      "borderWidth": 1,
+      "borderColor": "rgba(41,153,214,0.50)",
+      "borderCap": "round",
+      "shadow": true,
+      "shadowColor": "#32D3EB",
+      "shadowOffsetX": 0,
+      "shadowOffsetY": 0,
+      "points": [
+        30.907,
+        60.92969,
+        42.30261,
+        75.78131,
+        82.19153,
+        75.78131,
+        113.86836,
+        122.99313
+      ]
+    },
+    {
+      "type": "oval",
+      "background": "rgba(41,155,217,0.51)",
+      "borderColor": "#979797",
+      "shadow": true,
+      "shadowColor": "rgb(41,155,217)",
+      "shadowBlur": 24,
+      "shadowOffsetX": 0,
+      "shadowOffsetY": 0,
+      "rect": [
+        28.76604,
+        58.77331,
+        4.81895,
+        4.81895
+      ]
+    },
+    {
+      "type": "oval",
+      "background": "rgba(41,155,217,0.15)",
+      "borderColor": "#979797",
+      "shadow": true,
+      "shadowColor": "rgb(41,155,217)",
+      "shadowBlur": 24,
+      "shadowOffsetX": 0,
+      "shadowOffsetY": 0,
+      "rect": [
+        27.15258,
+        57.15986,
+        8.04586,
+        8.04586
+      ]
+    },
+    {
+      "type": "oval",
+      "background": "rgba(41,155,217,0.15)",
+      "borderColor": "#979797",
+      "shadow": true,
+      "shadowColor": "rgb(41,155,217)",
+      "shadowBlur": 24,
+      "shadowOffsetX": 0,
+      "shadowOffsetY": 0,
+      "rect": [
+        109.97707,
+        118.83789,
+        8.04586,
+        8.04586
+      ]
+    },
+    {
+      "type": "oval",
+      "background": "rgba(41,155,217,0.51)",
+      "borderColor": "#979797",
+      "shadow": true,
+      "shadowColor": "rgb(41,155,217)",
+      "shadowBlur": 24,
+      "shadowOffsetX": 0,
+      "shadowOffsetY": 0,
+      "rect": [
+        111.59052,
+        120.45134,
+        4.81895,
+        4.81895
+      ]
+    },
+    {
+      "type": "arc",
+      "background": "rgba(77,127,176,0.05)",
+      "borderColor": "#979797",
+      "arcOval": true,
+      "shadow": true,
+      "shadowColor": "rgb(41,155,217)",
+      "shadowBlur": 24,
+      "shadowOffsetX": 0,
+      "shadowOffsetY": 0,
+      "rect": [
+        18.56527,
+        27.82815,
+        209.11528,
+        66.20308
+      ]
+    },
+    {
+      "type": "text",
+      "text": {
+        "func": "attr@text1",
+        "value": "图扑软件"
+      },
+      "align": "center",
+      "color": {
+        "func": "attr@text.color",
+        "value": "#60ACFC"
+      },
+      "font": "24px arial, sans-serif",
+      "rect": [
+        0,
+        2.64713,
+        226.35953,
+        38.95904
+      ]
+    },
+    {
+      "type": "text",
+      "text": {
+        "func": "attr@text2",
+        "value": "Hightopo_Demo"
+      },
+      "align": "center",
+      "color": "rgb(124,145,155)",
+      "font": "14px arial, sans-serif",
+      "rect": [
+        0,
+        26.24668,
+        226.35953,
+        38.95904
+      ]
+    }
+  ]
+}

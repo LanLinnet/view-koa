@@ -41,9 +41,9 @@
     <!-- jQuery -->
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/ht/ht.js"></script>
-    <script src="/static/js/ht/ht-obj.js"></script>
-    <script src="/static/js/ht/ht-form.js"></script>
-    <script src="/static/js/ht/ht-modeling.js"></script>
+    <script src="/static/js/ht/plugin/ht-obj.js"></script>
+    <script src="/static/js/ht/plugin/ht-form.js"></script>
+    <script src="/static/js/ht/plugin/ht-modeling.js"></script>
 
     <script>
         //默认显示圆盘浇注机
@@ -387,7 +387,11 @@
 <div class="container">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title"><span class="glyphicon glyphicon-edit"></span> HT 3D Model</h3>
+            <h3 class="panel-title"><span class="glyphicon glyphicon-tree-deciduous"></span> HT 3D Model
+                <button type="button" class="btn btn-link" style="float: right;" onclick="window.location.href='/htEditor'">
+                    HT Editor<span class="glyphicon glyphicon-edit"></span>
+                </button>
+            </h3>
         </div>
         <div id="htmodel" class="panel-body" style="min-height: 600px;">
         </div>
