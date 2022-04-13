@@ -91,11 +91,11 @@
             document.getElementById("htmodel").appendChild(view);
             //borderPane.addToDOM();
             //加载obj模型，r3-角度，s3-大小
-            loadObj('E1', 0, {r3: [0, 0, 0], s3: [1, 1, 1]});
+            loadObj('E1', 0, {r3: [0, 0, 0], s3: [1, 1, 1]}, objFilePath, mtlFilePath);
         }
 
     
-        function loadObj(name, x, params){
+        function loadObj(name, x, params, objFilePath, mtlFilePath){
             params.prefix = 'obj/';
             params.center = true;
             params.cube = true;
@@ -351,7 +351,6 @@
                             //当上传的文件改变时，3D渲染文件的路径自动改变
                             //将后端回传的路径res.data.path中的'\'全部变为'/'
                             objFilePath = '/'+res.data.path.replace(new RegExp(/\\/g),'/');
-                            loadObj('E1', 0, {r3: [0, 0, 0], s3: [1, 1, 1]});
                         }
                 })
             }) 
@@ -372,7 +371,12 @@
                     success(res){
                             console.log(res);
                             mtlFilePath = '/'+res.data.path.replace(new RegExp(/\\/g),'/');
-                            loadObj('E1', 0, {r3: [0, 0, 0], s3: [1, 1, 1]});
+                            //只有当mtl文件上传完成时才会增加新的模型
+                            //新模型的名称使用此mtl文件的文件名
+                            //文件名应该避免重复，因为loadobj不是更新一个模型，而是增加一个node
+                            //如果文件名重复会导致旧模型与新模型都变为新上传的文件
+                            let modelName = res.data.filename.substring(0, res.data.filename.lastIndexOf("."));
+                            loadObj(modelName, 0, {r3: [0, 0, 0], s3: [1, 1, 1]}, objFilePath, mtlFilePath);
                         }
                 })
             }) 
